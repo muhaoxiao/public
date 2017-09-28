@@ -9,6 +9,8 @@ class SoundPlay : public cocos2d::Layer
 public:
     static cocos2d::Layer* createScene();
     virtual bool init();  
+	void InitBatteryLevel();
+	void ShowChinese();
     
     void menuCloseCallback(cocos2d::Ref* pSender);
 	void menuLaunchCallback(cocos2d::Ref* pSnder);
@@ -17,6 +19,7 @@ public:
     
     CREATE_FUNC(SoundPlay);
 	SimpleAudioEngine * audioengine;
+	Node * node;
 };
 
 #endif // __SOUNDPLAY_H__

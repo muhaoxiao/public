@@ -20,7 +20,7 @@ bool SoundPlay::init()
     audioengine = SimpleAudioEngine::getInstance();
 	audioengine->preloadBackgroundMusic("muse.mp3");
     Size visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 	 
     auto closeItem = MenuItemImage::create(
@@ -66,6 +66,8 @@ bool SoundPlay::init()
 	sprite->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
     this->addChild(sprite, 0);
 
+	InitBatteryLevel();
+	ShowChinese();
     return true;
 }
 
@@ -84,5 +86,37 @@ void SoundPlay::menuPauseCallback(cocos2d::Ref* pSnder)
 }
 void SoundPlay::menuResumeCallback(cocos2d::Ref* pSnder)
 {
-	audioengine->resumeBackgroundMusic();
+
+	//audioengine->resumeBackgroundMusic();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+	static int number = 50;
+	node->setPosition(Vec2(origin.x + number++, origin.y + 520));
+}
+
+static float s_level = -1;
+void SoundPlay::InitBatteryLevel()
+{
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+	node = cocos2d::Node::create();
+	this->addChild(node,2);
+	node->setPosition(Vec2(origin.x + 50, origin.y + 520));
+	auto ct = Sprite::create("widget/BL_content.png");
+	ct->setPosition(Vec2(-1, 0));
+	auto bg = Sprite::create("widget/BL_bg.png");
+	node->addChild(bg);
+	node->addChild(ct);
+	//node->setVisible(false);
+#if(CC_PLATFORM_ANDROID == CC_TARGET_PLATFORM)
+#endif
+}
+
+void SoundPlay::ShowChinese()
+{
+	//创建立词典实列,将xml文件加载到词典中
+	auto *chnString = Dictionary::createWithContentsOfFile("String.xml");
+	//通过xml文件中的key获取value、
+	const char *str1 = ((String*)chnString->objectForKey("string1"))->getCString();
+	auto * label1 = Label::create(str1,"Arial",36);
+	label1->setPosition(320, 270);
+	addChild(label1);
 }
